@@ -3,11 +3,11 @@ import google.generativeai as genai
 import json
 PLACE_ID = 'ChIJ3VsAyyJFE4cRqvHgchvDkLU'
 MAPS_PI_KEY = "AIzaSyCxUpksy_CDTlSJZ6eh4oCgFpULvT3P8yA"
-GENAI_API_KEY = ""
-genai.configure(api_key=GEMINI_API_KEY)
+GENAI_API_KEY = "AIzaSyBEYQzIZQJIsYfMV-C6LZPYxmoX3jlX_AI"
+genai.configure(api_key=GENAI_API_KEY)
 
 def get_place_details(place_id):
-    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,website,price_level,rating&key={MAPS_PI_KEY}"
+    url = f"https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&fields=name,website,price_level,formatted_address,rating&key={MAPS_PI_KEY}"
     response = requests.get(url)
     return response.json()
 
@@ -21,25 +21,23 @@ def generate_place_description(place_data):
     place = place_data['result']
     
     # Prepare the prompt for Gemini
-    prompt = f"""Based on the following information about a place, provide:
-1. Important information about this place (what it is, what it offers)
-2. Historical context and significance (if it's a historical building or landmark)
-3. Why someone should visit it
+    prompt = f"""Create a brief, engaging description (100-150 words) for someone who is looking at this place. It will appear on their phone screen.
 
-Place Information:
-- Name: {place.get('name', 'Unknown')}
-- Address: {place.get('formatted_address', 'Unknown')}
-- Rating: {place.get('rating', 'N/A')}/5
-- Types: {', '.join(place.get('types', []))}
-- Phone: {place.get('formatted_phone_number', 'Not available')}
-- Website: {place.get('website', 'Not available')}
-- Opening Hours: {json.dumps(place.get('opening_hours', {}), indent=2) if place.get('opening_hours') else 'Not available'}
+Write 2 short paragraphs:
+1. What this place is and why it's significant
+2. One interesting historical fact or story about it
 
-Please provide a comprehensive description that includes both practical information and historical context if applicable. Make it engaging and informative."""
+Be engaging, and focus on the most fascinating aspect. Make them feel like they discovered something special.
+
+Make sure to search the internet for real historical information about the place.
+
+Here is the complete place data in JSON format:
+{json.dumps(place, indent=2)}
+
+Keep it short, interesting, and mobile-friendly."""
 
     # Initialize the model
-    model = genai.GenerativeModel('gemini-pro')
-    
+    model = genai.GenerativeModel('gemini-2.5-flash')    
     # Generate response
     try:
         response = model.generate_content(prompt)
