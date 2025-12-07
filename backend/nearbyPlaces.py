@@ -1,12 +1,17 @@
 import requests
 import math
 import time
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 TEST_COORD={
     "latitude": 38.860180,
     "longitude":  -104.802557
 }
 
-API_KEY = "AIzaSyCxUpksy_CDTlSJZ6eh4oCgFpULvT3P8yA"
+API_KEY = os.getenv('MAPSAPIKEY') 
 def calculate_distance(lat1, lon1, lat2, lon2):
     R = 6371000  # Earth radius in meters
     phi1 = math.radians(lat1)

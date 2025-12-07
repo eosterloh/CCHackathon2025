@@ -1,9 +1,14 @@
 import requests
 import google.generativeai as genai
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 PLACE_ID = 'ChIJ3VsAyyJFE4cRqvHgchvDkLU'
-MAPS_PI_KEY = "AIzaSyCxUpksy_CDTlSJZ6eh4oCgFpULvT3P8yA"
-GENAI_API_KEY = "AIzaSyBEYQzIZQJIsYfMV-C6LZPYxmoX3jlX_AI"
+MAPS_PI_KEY = os.getenv('MAPSAPIKEY')
+GENAI_API_KEY = os.getenv('GEMINIKEY')
 genai.configure(api_key=GENAI_API_KEY)
 
 def get_place_details(place_id):
@@ -54,10 +59,3 @@ def get_place_with_description(place_id):
         'place_data': place_data,
         'description': description
     }
-
-
-result = get_place_with_description(PLACE_ID)
-print("=== Place Data ===")
-print(json.dumps(result['place_data'], indent=2))
-print("\n=== Generated Description ===")
-print(result['description'])

@@ -4,8 +4,11 @@ import os
 import base64
 import json
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
 from backend.textSend import get_place_with_description, get_place_details
 from backend.nearbyPlaces import get_nearby_places, rank_places_by_heading
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Allow requests from mobile app

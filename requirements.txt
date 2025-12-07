@@ -8,6 +8,5 @@ google-generativeai-tools==0.1.2
 google-auth==2.25.0
 google-auth-oauthlib==1.2.0
 google-auth-httplib2==0.2.0
-google-auth-oauthlib==1.2.0
 flask
-requests
+python-dotenv
