@@ -102,6 +102,8 @@ def identify_place():
             return jsonify({
                 'status': 'no_places',
                 'message': 'No places found nearby',
+                'name': 'Unknown Place',
+                'description': 'No historical information available for this location.',
                 'image': image_base64  # Return image even if no place found
             })
         
@@ -130,20 +132,19 @@ def identify_place():
         description = place_info['description']
         
         # Prepare response with all relevant data
+        # Flattened structure to match Android ApiResponse expectations
         response_data = {
             'status': 'success',
-            'place': {
-                'place_id': place_id,
-                'name': place_data.get('name'),
-                'description': description,
-                'address': place_data.get('formatted_address', ''),
-                'rating': place_data.get('rating'),
-                'website': place_data.get('website'),
-                'distance': top_place['distance'],  # meters
-                'bearing': top_place.get('bearing'),
-                'likelihood_score': top_place.get('likelihood')
-            },
+            'name': place_data.get('name'),
+            'description': description,
             'image': image_base64,  # Return the image back
+            'place_id': place_id,
+            'address': place_data.get('formatted_address', ''),
+            'rating': place_data.get('rating'),
+            'website': place_data.get('website'),
+            'distance': top_place['distance'],  # meters
+            'bearing': top_place.get('bearing'),
+            'likelihood_score': top_place.get('likelihood'),
             'location': {
                 'latitude': latitude,
                 'longitude': longitude,
